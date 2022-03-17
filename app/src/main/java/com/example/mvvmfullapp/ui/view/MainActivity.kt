@@ -1,11 +1,12 @@
-package com.example.mvvmfullapp.view
+package com.example.mvvmfullapp.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.example.mvvmfullapp.databinding.ActivityMainBinding
-import com.example.mvvmfullapp.viewmodel.QuoteViewModel
+import com.example.mvvmfullapp.ui.viewmodel.QuoteViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,9 +19,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        quoteViewModel.onCreate()
+
         quoteViewModel.currentQuote.observe(this, Observer { currentQuote ->
             binding.tvQuote.text = currentQuote.quote
             binding.tvAuthor.text = currentQuote.author
+        })
+
+        quoteViewModel.loading.observe(this, Observer { isLoading ->
+            binding.pbLoading.isVisible = isLoading
         })
 
         binding.viewContainer.setOnClickListener {
